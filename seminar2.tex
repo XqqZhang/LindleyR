@@ -1,0 +1,426 @@
+\documentclass{beamer}
+\mode<presentation> {
+\usetheme{Madrid}
+}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{multicol}
+\usepackage[autostyle]{csquotes}
+\usepackage[document]{ragged2e}
+\usepackage{times}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{natbib}
+\usepackage{subfig}
+
+
+	
+\title[]{A Three-Parameter Binomial-Lindley Distribution: Applications}
+
+
+\vspace{40mm}
+
+   \author[University of Regina]{Xiaoqing Zhang\\
+   \vspace{4mm}
+    {Supervisor: \textbf{Dr. Dianliang Deng}}}
+
+     \vspace{20mm}
+   \date { April $5^{th}$, 2021}
+\begin{document}
+
+\begin{frame}
+	\titlepage % Print the title page as the first slide
+\end{frame}
+\begin{frame}
+\frametitle{Outline}
+\begin{itemize}
+    \item Introduction
+    \item Simulation
+	\item Estimating the parameters
+	\vspace{2mm}
+	\begin{enumerate}
+        \item  Method of moments
+        \vspace{2mm}
+        \item Maximum likelihood estimation
+        \vspace{2mm}
+        \item  EM algorithm
+        \vspace{2mm}
+        \end{enumerate}
+	\vspace{2mm}
+	\item Application to real data sets
+	\vspace{2mm}
+    \item Future Research
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Binomial Distribution}
+\textbf{Definition}: A random variable $X$ is said to have a binomial distribution based on $m$ trials with success probability $p$ if and only if
+\vspace{2mm}
+\[
+Pr(X=x)={m \choose x} p^x (1-p)^{m-x};
+\]
+\hspace{60mm} $x=0,1,2,..., m$ and $ 0\leq p \leq 1$.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Two-Parameter Lindley Distribution(TPLD)}
+\hspace{5mm}The probability density function and cumulative distribution function of this two-parameter Lindley distribution(TPLD), introduced by Shanker(2013) are
+given by
+\[
+f(x;\alpha,\theta)= \frac{\theta^2}{(\theta+\alpha)} (1+\alpha x) e^{-\theta x} ; \hspace{3mm}   	x>0,\hspace{1mm} \theta>0 ,\hspace{1mm} \theta+ \alpha>0
+\]
+
+\[
+F(x;\alpha,\theta)=1-\left[ 1+ \frac{\alpha x}{\theta+\alpha}\right] e^{-\theta x};\hspace{3mm} x>0,\hspace{1mm} \theta>0 , \hspace{1mm}\theta+ \alpha>0
+\]
+\end{frame}
+
+\begin{frame}
+\frametitle {Proposed Model: Three-Parameter Binomial-Lindley Distribution}
+\textbf{Definition}: A random variable $X$ follows a three-parameter Binomial-Lindley distribution if it follows the stochastic representation
+\[
+X\mid \lambda \sim \mbox{Binomial}(m,p=1-e^{-\lambda})
+\]
+and
+\[
+\lambda \sim \mbox{TPLD}(\alpha, \theta)
+\]
+where $x=0,1,...,m$, $\lambda>0$, $\theta>0 $  and  $\theta+\alpha>0$.
+\end{frame}
+
+\begin{frame}
+\frametitle {Three-Parameter Binomial-Lindley Distribution}
+\textbf{Theorem}: Let $X$ be a random variable which follows a three-parameter Binomial-Lindley distribution with parameters $m$, $\alpha$ and $\theta$. Then, the pmf of $X$ is given by
+\[
+Pr(X=x)= {m \choose x} \frac{\theta^2}{\theta+\alpha} \sum_{j=0}^x {x \choose j} (-1)^{j} \frac{\theta+j+m-x+\alpha}{(\theta+j+m-x)^2};
+\]
+where $x=0, 1, ..., m$ , $\theta>0$ and $\theta+\alpha>0$.
+\end{frame}
+
+\begin{frame}
+\frametitle{Properties of the new generalized distribution}
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.17]{P1.png}
+\includegraphics[scale=0.17]{P3.png}
+\includegraphics[scale=0.17]{P4.png}
+\includegraphics[scale=0.17]{P6.png}
+\end{center}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Properties of the new generalized distribution}
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[scale=0.17]{P8.png}
+\includegraphics[scale=0.17]{P10.png}
+\includegraphics[scale=0.17]{P11.png}
+\includegraphics[scale=0.17]{P12.png}
+\end{center}
+\end{figure}
+\end{frame}
+
+\begin{frame}\footnotesize
+\frametitle{The M.G.F., P.G.F. and C.G.F}
+\[
+M_{X}(t)= e^{mt} \frac{\theta^2}{\theta+\alpha} \sum_{y=0}^m {m \choose y} \left( e^{-t}-1 \right)^y \frac{\theta+y+\alpha}{(\theta+y)^2}
+\]
+\[
+G_{X}(t)= t^m \frac{\theta^2}{\theta+\alpha} \sum_{y=0}^m {m \choose y} \left( \frac{1}{t}-1 \right)^y \frac{\theta+y+\alpha}{(\theta+y)^2}
+\]
+\[
+\varphi_{x}(t)=e^{mit} \frac{\theta^2}{\theta+\alpha} \sum_{y=0}^m {m \choose y} \left( e^{-it}-1 \right)^y \frac{\theta+y+\alpha}{(\theta+y)^2}
+\]
+\end{frame}
+
+\begin{frame}
+\frametitle{E(X) and V(X)}
+\begin{itemize}
+\item $E(X)=m\frac{\theta^2+\theta+2\alpha\theta+\alpha}{(\theta+\alpha)(\theta+1)^2}$
+
+\bigskip
+\item$E(X^2)=m^2 - (2m^2-m) \frac{\theta^2(\theta+1+\alpha)}{(\theta+\alpha)(\theta+1)^2}+ (m^2-m)\frac{\theta^2(\theta+2+\alpha)}{(\theta+\alpha)(\theta+2)^2}$
+
+\bigskip
+\item $V(X)= m\frac{\theta^2}{\theta+\alpha}\left[ \frac{\theta+1+\alpha}{(\theta+1)^2}-\frac{\theta+2+\alpha}{(\theta+2)^2}\right]+ m^2\frac{\theta^2}{\theta+\alpha}\left[ \frac{\theta+2+\alpha}{(\theta+2)^2} - \frac{\theta^2(\theta+1+\alpha)^2}{(\theta+\alpha)(\theta+1)^4}\right]$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{The Index of Dispersion}
+\begin{figure}
+\centering
+\includegraphics[scale=0.60]{Picture6}
+\end{figure} 
+\end{frame}
+
+\begin{frame}
+\frametitle{The Index of Dispersion}
+\begin{figure}
+\centering
+\includegraphics[scale=0.55]{Picture3}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulation of Random Variables}
+If $X \sim Bin(m,1-e^{-\lambda})$ and $\lambda\sim TPLD(\alpha,\theta)$, then following steps can be used to generate three-parameter Binomial-Lindley distribution$(m,\alpha,\theta)$ random variables
+
+\bigskip
+\textbf{Step 1:} Generate $\lambda_{i}, i=1,2,...,n$ from $TPLD(\alpha,\theta)$ distribution.
+
+\bigskip
+\textbf{Step 2:} Generate $X_{i}, i=1,2,...,n$, where $X_{i}\sim Bin(m,1-e^{-\lambda_{i}})$.
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{30-5.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{5-5.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Estimation}
+\begin{enumerate}
+      \item  Method of moments
+      \bigskip
+      \item Maximum likelihood estimation
+      \bigskip
+      \item  EM algorithm
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{Method of Moments}
+Given a random sample $x_{1}, x_{2}, ..., x_{n}$ of size n from the three-parameter Binomial-Lindley distribution.
+
+\footnotesize
+\[m_{1}=\frac{1}{n} \sum_{i=1}^n x_{i} \hspace{3mm} \textbf{=} \hspace{3mm} E(x_{i})=m\frac{\theta^2+\theta+2\alpha\theta+\alpha}{(\theta+\alpha)(\theta+1)^2}\] 
+
+\[m_{2}=\frac{1}{n} \sum_{i=1}^n x_{i}^2 \hspace{3mm} \textbf{=} \hspace{3mm} E(x_{i}^2)=m^2 - (2m^2-m) \frac{\theta^2(\theta+1+\alpha)}{(\theta+\alpha)(\theta+1)^2}+ (m^2-m)\frac{\theta^2(\theta+2+\alpha)}{(\theta+\alpha)(\theta+2)^2}\]
+\end{frame}
+
+\begin{frame}
+\frametitle{Method of Moments}
+\begin{figure}
+\centering
+\includegraphics[scale=0.65]{5-5x.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Method of Moments}
+\small
+Solve following equations with $m=12$
+
+\bigskip
+\begin{itemize}
+\item $E(x_{i})=m\frac{\theta^2+\theta+2\alpha\theta+\alpha}{(\theta+\alpha)(\theta+1)^2}=2.43$
+
+\bigskip
+\item $E(x_{i}^2)= m^2 - (2m^2-m) \frac{\theta^2(\theta+1+\alpha)}{(\theta+\alpha)(\theta+1)^2}+ (m^2-m)\frac{\theta^2(\theta+2+\alpha)}{(\theta+\alpha)(\theta+2)^2}=10.95$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+\includegraphics[scale=0.5]{choiceInitial.png}
+\end{figure}
+
+Thus, the method of moments estimators are $\hat{\alpha}=4.243177$ and $\hat{\theta}=5.727453$
+\end{frame}
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation}
+Let $x_{1}, x_{2}, ..., x_{n}$ be random observations of size n from this proposed generalized Binomial-Lindley distribution. The likelihood function $L$ is given as
+\[
+\begin{split}
+L(m,\alpha,\theta)&= \prod\limits_{i=1}^n Pr(X_{i}=x_{i})\\
+&= \prod\limits_{i=1}^n \left[ {m \choose x_{i}} \frac{\theta^2}{\theta+\alpha} \sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}\right]
+\end{split}
+\]
+\end{frame}
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation}
+Then, the log-likelihood function is 
+\medskip
+\footnotesize
+\[
+\begin{split}
+\ell(m,\alpha,\theta)&= ln \left[ L(m,\alpha,\theta)\right] \\
+&= ln \left\lbrace \prod\limits_{i=1}^n \left[ {m \choose x_{i}} \frac{\theta^2}{\theta+\alpha} \sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}\right] \right\rbrace\\
+&= \sum\limits_{i=1}^n ln \left[ {m \choose x_{i}} \frac{\theta^2}{\theta+\alpha} \sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}\right]\\
+&= n\left[  2ln\theta - ln(\theta+\alpha)\right]   +\sum\limits_{i=1}^n \left\lbrace ln {m \choose x_{i}} + ln \left[ \sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2} \right]  \right\rbrace 
+\end{split}
+\]
+\end{frame}
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation}
+\small
+The first partial derivative with respect to $\alpha$ is
+\[
+\frac{\partial \ell}{\partial \alpha}= -\frac{n}{\theta+\alpha} + \sum\limits_{i=1}^n \left[ \frac{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{1}{(\theta+j+m-x_{i})^2}}{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}} \right]
+\]
+\bigskip
+
+The second partial derivative with respect to $\alpha$ is
+\[
+\begin{split}
+\frac{\partial^2 \ell}{\partial \alpha^2}&= \frac{n}{(\theta+\alpha)^2} + \sum\limits_{i=1}^n \left\lbrace  -\frac{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^j \frac{1}{(\theta+j+m-x_{i})^2} \sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^j \frac{1}{(\theta+j+m-x_{i})^2}} {\left[ \sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^j \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2} \right]^2}  \right\rbrace \\
+&= \frac{n}{(\theta+\alpha)^2} - \sum\limits_{i=1}^n \left[ \frac{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^j \frac{1}{(\theta+j+m-x_{i})^2}}{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}} \right]^2
+\end{split}
+\]
+\end{frame}
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation}
+\small
+The first partial derivative with respect to $\theta$ is
+\[
+\begin{split}
+\frac{\partial \ell}{\partial \theta}&= \frac{2n}{\theta} - \frac{n}{\theta+\alpha} + \sum\limits_{i=1}^n \left[ \frac{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{(\theta+j+m-x_{i})^2 - (\theta+j+m-x_{i}+\alpha)2(\theta+j+m-x_{i})}{(\theta+j+m-x_{i})^4}}{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}} \right] \\
+&= \frac{2n}{\theta} - \frac{n}{\theta+\alpha} + \sum\limits_{i=1}^n \left[  \frac{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i} - 2\theta-2j-2m+2x_{i}-2\alpha}{(\theta+j+m-x_{i})^3}}{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}} \right] \\
+&= \frac{2n}{\theta} - \frac{n}{\theta+\alpha} + \sum\limits_{i=1}^n \left[  \frac{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j+1} \frac{\theta+j+m-x_{i}+2\alpha}{(\theta+j+m-x_{i})^3}}{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}} \right]
+\end{split}
+\]
+\end{frame}
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation}
+The second partial derivative with respect to $\theta$ is
+
+\smallskip
+\small
+\[
+\begin{split}
+\frac{\partial^2 \ell}{\partial \theta^2}&= -\frac{2n}{\theta^2} + \frac{n}{(\theta+\alpha)^2}+ \sum\limits_{i=1}^n \frac{2\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j+2} \frac{\theta+j+m-x_{i}+3\alpha}{(\theta+j+m-x_{i})^4}}{ \sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}}\\
+\\[0.5mm]&\hspace{10mm}- \sum\limits_{i=1}^n \left[ \frac{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j+1} \frac{\theta+j+m-x_{i}+2\alpha}{(\theta+j+m-x_{i})^3}}{ \sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}} \right] ^2
+\end{split}
+\]
+\end{frame}
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation}
+The second partial derivative with respect to $\alpha$ and $\theta$ is
+
+\smallskip
+\small
+\[
+\begin{split}
+\frac{\partial^2 \ell}{\partial \alpha \partial \theta}&= \frac{n}{(\theta+\alpha)^2} + \sum\limits_{i=1}^n \frac{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j+1} \frac{2}{(\theta+j+m-x_{i})^3}}{ \sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}}\\
+\\[0.5mm]&- \sum\limits_{i=1}^n  \frac{\left[\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{1}{(\theta+j+m-x_{i})^2}\right] \left[\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j+1} \frac{\theta+j+m-x_{i}+2\alpha}{(\theta+j+m-x_{i})^3}\right]}{\left[ \sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}\right] ^2} 
+\end{split}
+\]
+\end{frame}
+
+\begin{frame}
+\frametitle{Maximum Likelihood Estimation}
+\Large
+$\frac{\partial \ell}{\partial \alpha}= -\frac{n}{\theta+\alpha} + \sum\limits_{i=1}^n \left[ \frac{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{1}{(\theta+j+m-x_{i})^2}}{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}} \right]=0$
+
+\bigskip
+$\frac{\partial \ell}{\partial \theta}= \frac{2n}{\theta} - \frac{n}{\theta+\alpha} + \sum\limits_{i=1}^n \left[  \frac{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j+1} \frac{\theta+j+m-x_{i}+2\alpha}{(\theta+j+m-x_{i})^3}}{\sum_{j=0}^{x_{i}} {x_{i} \choose j} (-1)^{j} \frac{\theta+j+m-x_{i}+\alpha}{(\theta+j+m-x_{i})^2}} \right]=0$
+
+\bigskip
+$\frac{\partial^2 \ell}{\partial \hat{\alpha}^2}<0$,  \hspace{5mm} $\frac{\partial^2 \ell}{\partial \hat{\theta}^2}<0 $
+\end{frame}
+
+\begin{frame}
+\frametitle{Newton-Raphson Method}
+Newton-Raphson method tells us a better approximation for the root is
+\[
+x_{1}=x_{0}-\frac{f(x_{0})}{f'(x_{0})}
+\]
+
+\bigskip
+Therefore, for any x value $x_{n}$, the next x is given by
+\[
+x_{n+1}=x_{n}-\frac{f(x_{n})}{f'(x_{n})}
+\]
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Newton-Raphson Method}
+\[
+\begin{pmatrix}
+\alpha_{n+1}\\
+\theta_{n+1}
+\end{pmatrix}
+=\begin{pmatrix}
+\alpha_{n}\\
+\theta_{n}
+\end{pmatrix}
+- H^{-1}U
+\]
+
+\medskip
+where the Score vector
+\[ 
+U=\begin{pmatrix} 
+\frac{\partial \ell}{\partial \alpha} \\  
+\\[0.1mm]\frac{\partial \ell}{\partial \theta}
+\end{pmatrix}
+\]
+and the Hessian matrix is
+\[
+H=\begin{pmatrix} 
+\frac{\partial^2 \ell}{\partial \alpha^2} & \frac{\partial^2 \ell}{\partial \alpha \partial \theta}\\  
+\\ \frac{\partial^2 \ell}{\partial \alpha \partial \theta} & \frac{\partial^2 \ell}{\partial \theta^2}
+\end{pmatrix}
+\]
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+\includegraphics[scale=0.7]{P15.png}
+\includegraphics[scale=0.7]{P17.png}
+\includegraphics[scale=0.7]{P18.png}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Future Research}
+\begin{itemize}
+	\item Compounding the binomial distribution with a three-parameter lindley distribution
+	\vspace{2mm}
+	\begin{enumerate}
+        \item  
+        \vspace{2mm}
+        \item 
+        \vspace{2mm}
+        \item  
+        \vspace{2mm}
+        \end{enumerate}
+	\vspace{2mm}
+	\item 
+	\vspace{2mm}
+    \item 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+		\LARGE Thank you for attending\\
+	\end{center}
+	
+\end{frame}
+\end{document} 
