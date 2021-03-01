@@ -1,11 +1,10 @@
 library(LindleyR)
 ##Simulation
+#y<- rslindley(100, 5, 5, mixture = TRUE)
+#x<- rbinom(100, 12, 1-exp(-y))
 set.seed(1)
-y<- rslindley(100, 5, 5, mixture = TRUE)
-x<- rbinom(100, 12, 1-exp(-y))
-
 ##MLE    
-Lx<- function(alpha,theta,m,n){
+Lx<- function(alpha,theta,m,n,x){
     
     lx=0
     for(i in 1:n){
@@ -24,7 +23,7 @@ Lx<- function(alpha,theta,m,n){
         return(lx)
 }
 
-Dla<- function(alpha,theta,m,n){
+Dla<- function(alpha,theta,m,n,x){
     dla=-n/(theta+alpha)
     for(i in 1:n){
             s=0
@@ -49,7 +48,7 @@ Dla<- function(alpha,theta,m,n){
         return(dla)
 }
 
-Ddla<- function(alpha,theta,m,n){
+Ddla<- function(alpha,theta,m,n,x){
     ddla=(n^2)/(theta+alpha)^2
     for(i in 1:n){
             s=0
@@ -74,7 +73,7 @@ Ddla<- function(alpha,theta,m,n){
         return(ddla)
 }
 
-Dlt<- function(alpha,theta,m,n){
+Dlt<- function(alpha,theta,m,n,x){
     dlt=2*n/theta-n/(theta+alpha)
     for(i in 1:n){
             s=0
@@ -99,7 +98,7 @@ Dlt<- function(alpha,theta,m,n){
         return(dlt)
 }
 
-Ddlt<- function(alpha,theta,m,n){
+Ddlt<- function(alpha,theta,m,n,x){
     ddlt=-2*n/theta^2+n/(theta+alpha)^2
     for(i in 1:n){
             s=0
@@ -129,7 +128,7 @@ Ddlt<- function(alpha,theta,m,n){
         return(ddlt)
 }
 
-Ddlat<- function(alpha,theta,m,n){
+Ddlat<- function(alpha,theta,m,n,x){
     ddlat=n/(theta+alpha)^2
     for(i in 1:n){
             s=0
@@ -164,53 +163,42 @@ Ddlat<- function(alpha,theta,m,n){
         return(ddlat)
 }
 
-Pt<-function(alpha,theta){
-    pt<-c(alpha,theta)
-    return(pt)
-}
-
-
-In<- function(alpha,theta,m,n){
-    ddla=Ddla(alpha,theta,m,n)
-    ddlat=Ddlat(alpha,theta,m,n)
-    ddlt=Ddlt(alpha,theta,m,n)
-    Inn=cbind(c(ddla,ddlat),c(ddlat,ddlt))
-    return(Inn)
-}
-
-Inverse<- function(alpha,theta,m,n){
-    i=In(alpha,theta,m,n)
-    inverse=solve(i)
-    return(inverse)
-}
-
-
-U<- function(alpha,theta,m,n){
-    dla=Dla(alpha,theta,m,n)
-    dlt=Dlt(alpha,theta,m,n)
-    u=c(dla,dlt)
-    return(u)
-}
-
-Pt1<- function(alpha,theta,m,n){
-  pt=Pt(alpha,theta)
-  inverse=Inverse(alpha,theta,m,n)
-  u=U(alpha,theta,m,n)   
+Ans<- function(alpha,theta,m,n,x){
+  dla=Dla(alpha,theta,m,n,x)
+  dlt=Dlt(alpha,theta,m,n,x)
+  ddla=Ddla(alpha,theta,m,n,x)
+  ddlat=Ddlat(alpha,theta,m,n,x)
+  ddlt=Ddlt(alpha,theta,m,n,x)
+  u=c(dla,dlt)
+  Inn=cbind(c(ddla,ddlat),c(ddlat,ddlt))
+  inverse=solve(Inn)
+  pt<-c(4.9,5.4)
   pt1=pt-inverse%*%u
-  return(pt1)
-}
-
-Ans<- function(alpha,theta,m,n){
-  pt=Pt(alpha,theta)
-  pt1=Pt1(alpha,theta,m,n)
-  while (abs(pt1[1]-pt[1])>0.00001 | abs(pt1[2]-pt[2])>0.00001) {
+  while (abs(pt1[1]-pt[1])>0.0001 | abs(pt1[2]-pt[2])>0.0001) {
     pt[1]=pt1[1]
     pt[2]=pt1[2]
-    pt1=Pt1(pt[1],pt[2],m,n) 
-    print(pt1)
+    pt1=pt-inverse%*%u
+    cat("pt: ", pt)
+    cat("pt1: ", pt1)
   }
   return(pt1)  
 }
+
+alpha=5
+theta=5
+m=12
+n=100
+B=2
+Z<-matrix(0, nrow=B, ncol = 2)
+for (b in 1:B){
+     for(i in 1:n){
+     y[i]<- rslindley(1, theta, alpha, mixture = TRUE)
+     x[i]<- rbinom(1, m, 1-exp(-y[i]))
+     }
+    cat("x: ", x)
+    Z[b,]<- Ans(alpha,theta,m,n,x)
+}
+est<-c(mean(Z[,1]),mean(Z[,2]))
 
 
 
