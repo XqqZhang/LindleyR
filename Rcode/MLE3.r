@@ -56,18 +56,21 @@ model<- function(p){
 }
 
 m=12
-n=1000
+n=2000
 B=2000
 alpha=5
 theta=5
-esta<-matrix(0, nrow=B, ncol = 2)
+x<-numeric(n)
+y<-numeric(n)
+mleEsta<-matrix(0, nrow=B, ncol = 2)
 for(b in 1:B){
      for(i in 1:n){
      y[i]<- rslindley(1, theta, alpha, mixture = TRUE)
      x[i]<- rbinom(1, m, 1-exp(-y[i]))
      }
     xstart  <-  c(4.8,5.3)
-    esta[b,]= nleqslv(xstart,model)$x
+    mleEsta[b,]= nleqslv(xstart,model)$x
     
 }
-estb<-c(mean(esta[,1]),mean(esta[,2]))
+mleEstb<-c(mean(mleEsta[,1]),mean(mleEsta[,2]))
+mleSe<-c(sd(mleEsta[,1])/length(mleEsta[,1]),sd(mleEsta[,2])/length(mleEsta[,2]))

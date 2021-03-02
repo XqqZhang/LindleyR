@@ -178,8 +178,6 @@ Ans<- function(alpha,theta,m,n,x){
     pt[1]=pt1[1]
     pt[2]=pt1[2]
     pt1=pt-inverse%*%u
-    cat("pt: ", pt)
-    cat("pt1: ", pt1)
   }
   return(pt1)  
 }
@@ -195,7 +193,6 @@ for (b in 1:B){
      y[i]<- rslindley(1, theta, alpha, mixture = TRUE)
      x[i]<- rbinom(1, m, 1-exp(-y[i]))
      }
-    cat("x: ", x)
     Z[b,]<- Ans(alpha,theta,m,n,x)
 }
 est<-c(mean(Z[,1]),mean(Z[,2]))

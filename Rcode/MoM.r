@@ -1,6 +1,4 @@
-
 library(LindleyR)
-library(rootSolve)
 library(nleqslv)
 #y<- rslindley(100, 5, 5, mixture = TRUE)
 #x<- rbinom(100, 12, 1-exp(-y))
@@ -37,18 +35,21 @@ model<- function(p){
 }
 
 m=12
-n=1000
+n=2000
 B=2000
 alpha=5
 theta=5
-esta<-matrix(0, nrow=B, ncol = 2)
+x<-numeric(n)
+y<-numeric(n)
+momEsta<-matrix(0, nrow=B, ncol = 2)
 for(b in 1:B){
      for(i in 1:n){
      y[i]<- rslindley(1, theta, alpha, mixture = TRUE)
      x[i]<- rbinom(1, m, 1-exp(-y[i]))
      }
     xstart  <-  c(4.8,5.3)
-    esta[b,]= nleqslv(xstart,model)$x
+    momEsta[b,]= nleqslv(xstart,model)$x
     
 }
-estb<-c(mean(esta[,1]),mean(esta[,2]))
+momEstb<-c(mean(momEsta[,1]),mean(momEsta[,2]))
+momSe<-c(sd(momEsta[,1])/length(momEsta[,1]),sd(momEsta[,2])/length(momEsta[,2]))
